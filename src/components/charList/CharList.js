@@ -47,7 +47,9 @@ class CharList extends Component {
         const thumbClassFit = item.thumbnail.includes('available') ? 'unset' : 'cover'
         
         return (
-            <li key={item.name + index} className="char__item">
+            <li key={item.id} 
+            className="char__item"
+            onClick={() => this.props.onCharSelected(item.id)}>
                 <img style={{objectFit: thumbClassFit}}src={item.thumbnail} alt=""/>
                 <div className="char__name">{item.name}</div>
             </li> 
