@@ -17,13 +17,6 @@ class RandomChar extends Component {
 
     componentDidMount() {
         this.updateChar();
-        // this.timerId = setInterval(this.updateChar, 15000)
-        console.log('mount');
-    }
-
-    componentWillUnmount() {
-        console.log('unmount')
-        clearInterval(this.timerId)
     }
 
     onCharLoaded = (char) => {
@@ -56,13 +49,10 @@ class RandomChar extends Component {
     }
 
     render() {
-        console.log('render')
         const {char, loading, error} = this.state;
         const errorMessage = error ? <ErrorMessage/> : null;
         const spinner = loading ? <Spinner/> : null;
         const content = !(loading || error) ? <View char={char}/> : null;
-
-    
 
         return (
             <div className="randomchar">
