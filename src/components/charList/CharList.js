@@ -1,7 +1,10 @@
 import {Component} from 'react';
+import PropTypes from 'prop-types';
+
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import MarvelService from '../../services/MarvelService';
+
 import './charList.scss';
 
 class CharList extends Component {
@@ -56,46 +59,64 @@ class CharList extends Component {
         })
     }
 
-    render() { 
+    renderItems(arr) {
+        const items =  arr.map((item, i) => {
+            
+            const thumbClassFit = item.thumbnail.includes('available') ? {'objectFit' : 'unset'} : {'objectFit' : 'cover'}
+            
+            return (
+                <li 
+                    className={this.props.selectedChar === item.id ? 'char__item char__item_selected' : 'char__item'}
+                    key={item.id}
+                    tabIndex={0}
+                    onKeyPress={(e) => {
+                        if (e.key === ' ' || e.key === "Enter") this.props.onCharSelected(item.id)
+                    }}
+                    onClick={() => this.props.onCharSelected(item.id)}>
+                        <img src={item.thumbnail} alt={item.name} style={thumbClassFit}/>
+                        <div className="char__name">{item.name}</div>
+                </li>
+            )
+        });
 
-    const characters = this.state.charList;
-        
-    const elements = characters.map((item, index) => {
-        const thumbClassFit = item.thumbnail.includes('available') ? 'unset' : 'cover'
-        
         return (
-            <li key={item.id} 
-            className="char__item"
-            onClick={() => this.props.onCharSelected(item.id)}>
-                <img style={{objectFit: thumbClassFit}}src={item.thumbnail} alt=""/>
-                <div className="char__name">{item.name}</div>
-            </li> 
+            <ul className="char__grid">
+                {items}
+            </ul>
         )
-    })
-      
-    const {loading, error, newItemLoading, offset} = this.state;
+    }
+
+    
+
+    render() {
+
+        const {charList, loading, error, offset, newItemLoading, charEnded} = this.state;
+        
+        const chars = this.renderItems(charList);
 
         const errorMessage = error ? <ErrorMessage/> : null;
         const spinner = loading ? <Spinner/> : null;
-        const content = !(loading || error) ? elements : null;
+        const content = !(loading || error) ? chars : null;
 
         return (
             <div className="char__list">
-                <ul className="char__grid">
-                    {errorMessage}
-                    {spinner}
-                    {content}
-                </ul>
+                {errorMessage}
+                {spinner}
+                {content}
                 <button 
                     className="button button__main button__long"
                     disabled={newItemLoading}
+                    style={{'display': charEnded ? 'none' : 'block'}}
                     onClick={() => this.onRequest(offset)}>
                     <div className="inner">load more</div>
                 </button>
             </div>
         )
     }
-    
+}
+
+CharList.propTypes = {
+    onCharSelected: PropTypes.func.isRequired
 }
 
 export default CharList;
