@@ -11,7 +11,7 @@ const CharList = (props) => {
 
     const [charList, setCharList] = useState([])
     const [newItemLoading, setNewItemLoading] = useState(false)
-    const [offset, setOffset] = useState(210)
+    const [offset, setOffset] = useState(109)
     const [charEnded, setCharEnded] = useState(false)
     
     const {loading, error, getAllCharacters} = useMarvelService();
@@ -30,15 +30,24 @@ const CharList = (props) => {
     const onCharListLoaded = (newCharList) => {
         let ended = false;
         if (newCharList.length < 9) {
-            ended = true;
+          ended = true;
         }
 
-        setCharList(charList => [...charList, ...newCharList])
-        setNewItemLoading(newItemLoading => false)
-        setOffset(offset => offset + 9)
-        setCharEnded(charEnded => ended)
-    }
+        setCharList(charList => {
+            const uniqueChars = newCharList.filter(newChar => 
+              !charList.some(char => char.id === newChar.id)
+            );
+          
+            return [...charList, ...uniqueChars];
+          });
+          
 
+        setNewItemLoading(false);
+        setOffset(offset => offset + 9)
+        setCharEnded(ended);
+      }
+      
+      
     const itemRefs = useRef([])
 
     const focusOnItem = (id) => {
