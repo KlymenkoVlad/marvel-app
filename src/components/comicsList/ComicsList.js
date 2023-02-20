@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -31,24 +32,30 @@ const ComicsList = () => {
             ended = true;
         }
 
-        setComicList(comicList => [...comicList, ...newComicList])
+        setComicList(comicList => {
+            const uniqueComics = newComicList.filter(newChar => 
+              !comicList.some(char => char.id === newChar.id)
+            );
+          
+            return [...comicList, ...uniqueComics];
+          });
+          
+
         setNewItemLoading(newItemLoading => false)
         setOffset(offset => offset + 8)
         setComicEnded(comicEnded => ended)
     }
 
     function renderItems(arr) {
-        const items = arr.map((item, i) => {
-
-            const price = item.price !== 0 ? `${item.price}$` : "NOT AVAILABLE"
+        const items = arr.map(item => {
             
             return (
                 <li key={item.id} className="comics__item">
-                    <a href="#">
+                    <Link to={`/comics/${item.id}`}>
                         <img src={item.thumbnail} alt="ultimate war" className="comics__item-img"/>
                         <div className="comics__item-name">{item.name}</div>
-                        <div className="comics__item-price">{price}</div>
-                    </a>
+                        <div className="comics__item-price">{item.price}</div>
+                    </Link>
                 </li>
             )
         })
