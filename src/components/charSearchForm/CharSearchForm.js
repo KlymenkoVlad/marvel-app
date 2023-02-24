@@ -42,7 +42,7 @@ const CharSearchForm = () => {
                     charName: ''
                 }}
                 validationSchema = {Yup.object({
-                    charName: Yup.string().required('This field is required')
+                    charName: Yup.string().required('This field is required').min(2, 'At least 2 characters')
                 })}
                 onSubmit = { ({charName}) => {
                     updateChar(charName);
