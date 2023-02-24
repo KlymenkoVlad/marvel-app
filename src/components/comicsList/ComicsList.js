@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -48,24 +49,32 @@ const ComicsList = () => {
 
     function renderItems(arr) {
         const items = arr.map(item => {
-            
             return (
-                <li key={item.id} className="comics__item">
-                    <Link to={`/comics/${item.id}`}>
-                        <img src={item.thumbnail} alt="ultimate war" className="comics__item-img"/>
-                        <div className="comics__item-name">{item.name}</div>
-                        <div className="comics__item-price">{item.price}</div>
-                    </Link>
-                </li>
+                <CSSTransition key={item.id} timeout={500} classNames="comics__item">
+                    <li key={item.id} className="comics__item">
+                        <Link to={`/comics/${item.id}`}>
+                            <img src={item.thumbnail} alt="ultimate war" className="comics__item-img"/>
+                            <div className="comics__item-name">{item.name}</div>
+                            <div className="comics__item-price">{item.price}</div>
+                        </Link>
+                    </li>
+                </CSSTransition>
             )
-        })
-        
-        return(
-            <ul className="comics__grid">
+        }
+                
+        );
+    
+        return (
+        <ul className="comics__grid">
+            <TransitionGroup component={null}>
                 {items}
-            </ul>
-        )
+            </TransitionGroup>
+        </ul>
+        );
     }
+    
+    
+      
 
     const comics = renderItems(comicList);
 

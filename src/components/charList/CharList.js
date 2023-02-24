@@ -1,5 +1,6 @@
 import {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -61,29 +62,35 @@ const CharList = (props) => {
             
         const thumbClassFit = item.thumbnail.includes('available') ? {'objectFit' : 'unset'} : {'objectFit' : 'cover'}
             
-            return (
+        return (
+            <CSSTransition key={item.id} timeout={500} classNames="char__item">
                 <li 
-                    className='char__item'
-                    key={item.id}
-                    ref={el => itemRefs.current[i] = el}
+                    className="char__item"
                     tabIndex={0}
+                    ref={el => itemRefs.current[i] = el}
                     onClick={() => {
-                        props.onCharSelected(item.id)
-                        focusOnItem(i)
+                        props.onCharSelected(item.id);
+                        focusOnItem(i);
                     }}
                     onKeyPress={(e) => {
-                        if (e.key === ' ' || e.key === "Enter") props.onCharSelected(item.id)
+                        if (e.key === ' ' || e.key === "Enter") {
+                            props.onCharSelected(item.id);
+                            focusOnItem(i);
+                        }
                     }}>
                         <img src={item.thumbnail} alt={item.name} style={thumbClassFit}/>
                         <div className="char__name">{item.name}</div>
                 </li>
-            )
+            </CSSTransition>
+        )
     });
 
-        return (
-            <ul className="char__grid">
+    return (
+        <ul className="char__grid">
+            <TransitionGroup component={null}>
                 {items}
-            </ul>
+            </TransitionGroup>
+        </ul>
         )
     }
     
@@ -113,3 +120,5 @@ CharList.propTypes = {
 }
 
 export default CharList;
+
+

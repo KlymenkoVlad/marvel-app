@@ -1,12 +1,28 @@
 @import '../../style/variables.scss';
 
 .char {
+    &-enter {
+        opacity: 0;
+    }
+    &-enter-active {
+        opacity: 1;
+        transition: opacity 500ms ease-in;
+    }
+    &-exit {
+        opacity: 1;
+    }
+    &-exit-active {
+        opacity: 0;
+        transition: opacity 500ms ease-in;
+    }
     &__info {
         padding: 25px;
         box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
         position: relative;
         z-index: 5;
         background-color: #fff;
+        margin-bottom: 50px;
+        
         &-name {
             font-weight: bold;
             font-size: 22px;
@@ -63,3 +79,22 @@
     }
 
 }
+
+.char-enter {
+    opacity: 0;
+  }
+  
+  .char-enter-active {
+    opacity: 1;
+    transition: opacity 200ms ease-in;
+  }
+  
+  .char-exit {
+    opacity: 1;
+  }
+  
+  .char-exit-active {
+    opacity: 0;
+    transition: opacity 200ms ease-in;
+  }
+  
