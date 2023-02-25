@@ -12,17 +12,20 @@ const SinglePage = ({Component, dataType}) => {
 
         useEffect(() => {
             updateData()
+            // eslint-disable-next-line
         }, [id])
 
         const updateData = () => {
             clearError();
 
-            switch (dataType) {
-                case 'comic':
-                    getComic(id).then(onDataLoaded).then(() => setProcess('confirmed'));
-                    break;
-                case 'character':
-                    getCharacter(id).then(onDataLoaded).then(() => setProcess('confirmed'));
+        switch (dataType) {
+            case 'comic':
+                getComic(id).then(onDataLoaded).then(() => setProcess('confirmed'));
+                break;
+            case 'character':
+                getCharacter(id).then(onDataLoaded).then(() => setProcess('confirmed'));
+                break;
+            default: throw new Error('unexpected page loading')
             }
         }
 

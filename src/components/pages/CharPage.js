@@ -1,11 +1,11 @@
-import ComicsList from "../comicsList/ComicsList";
+import CharSearchForm from '../charSearchForm/CharSearchForm'
 import AppBanner from "../appBanner/AppBanner";
 
 const ComicsPage = () => {
     return (
         <>
             <AppBanner/>
-            <CharSearch/>
+            <CharSearchForm/>
         </>
     )
 }
